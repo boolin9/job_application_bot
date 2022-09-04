@@ -9,6 +9,7 @@ import os
 class Bot:
     
     def __init__(self):
+        load_dotenv()
         self.chrome_path = os.getenv('CHROME_PATH')
         self.ser = Service(self.chrome_path)
         self.driver = webdriver.Chrome(service=self.ser)
@@ -34,7 +35,7 @@ class Bot:
         
     
     def apply(self):
-        time.sleep(5)
+        self.driver.implicitly_wait(5)
         html_list = self.driver.find_element(By.CLASS_NAME, 'scaffold-layout__list-container')
         jobs = html_list.find_elements(By.CLASS_NAME, 'disabled ember-view job-card-container__link job-card-list__title')
         apply_button = self.driver.find_element(By.CLASS_NAME, 'artdeco-button__text')
@@ -42,6 +43,8 @@ class Bot:
             if jobs[job].is_displayed():
                 job.click()
                 apply_button.click()
+
+
             
 
 if __name__ == "__main__":
@@ -49,3 +52,4 @@ if __name__ == "__main__":
     bot.sign_in()
     bot.job_page_setup()
     bot.apply()
+    
